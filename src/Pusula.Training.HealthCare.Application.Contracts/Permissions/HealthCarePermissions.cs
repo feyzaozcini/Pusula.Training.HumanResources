@@ -33,6 +33,13 @@ public static class HealthCarePermissions
         public const string Delete = Default + ".Delete";
     }
    
+    public static class Salaries
+    {
+        public const string Default = GroupName + ".Salaries";
+        public const string Edit = Default + ".Edit";
+        public const string Create = Default + ".Create";
+        public const string Delete = Default + ".Delete";
+    }
 
 
 }

@@ -17,7 +17,6 @@ public class HealthCarePermissionDefinitionProvider : PermissionDefinitionProvid
         //Define your own permissions here. Example:
         //myGroup.AddPermission(HealthCarePermissions.MyPermission1, L("Permission:MyPermission1"));
 
-       
 
         var departmentPermission = myGroup.AddPermission(HealthCarePermissions.Departments.Default, L("Permission:Departments"));
         departmentPermission.AddChild(HealthCarePermissions.Departments.Create, L("Permission:Create"));
@@ -28,6 +27,11 @@ public class HealthCarePermissionDefinitionProvider : PermissionDefinitionProvid
         employeePermission.AddChild(HealthCarePermissions.Employees.Create, L("Permission:Create"));
         employeePermission.AddChild(HealthCarePermissions.Employees.Edit, L("Permission:Edit"));
         employeePermission.AddChild(HealthCarePermissions.Employees.Delete, L("Permission:Delete"));
+
+        var salaryPermission = myGroup.AddPermission(HealthCarePermissions.Salaries.Default, L("Permission:Salary"));
+        salaryPermission.AddChild(HealthCarePermissions.Salaries.Create, L("Permission:Create"));
+        salaryPermission.AddChild(HealthCarePermissions.Salaries.Edit, L("Permission:Edit"));
+        salaryPermission.AddChild(HealthCarePermissions.Salaries.Delete, L("Permission:Delete"));
 
 
     }

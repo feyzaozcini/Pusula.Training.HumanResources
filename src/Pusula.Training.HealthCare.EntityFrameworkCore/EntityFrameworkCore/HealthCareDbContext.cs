@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
+using Pusula.Training.HealthCare.Salaries;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -98,6 +99,18 @@ public class HealthCareDbContext :
                 b.HasOne<Department>().WithMany().IsRequired().HasForeignKey(x => x.DepartmentId).OnDelete(DeleteBehavior.NoAction);
             });
 
+            builder.Entity<Salary>(b =>
+            {
+                b.ToTable(HealthCareConsts.DbTablePrefix + "Salaries", HealthCareConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.BaseAmount).HasColumnName(nameof(Salary.BaseAmount)).IsRequired().HasMaxLength((int)SalaryConst.BaseAmountMaxLength);
+                b.Property(x => x.Bonus).HasColumnName(nameof(Salary.Bonus)).HasMaxLength((int)SalaryConst.BonusMaxLength);
+                b.Property(x => x.Deduction).HasColumnName(nameof(Salary.Deduction)).HasMaxLength((int)SalaryConst.DeductionMaxLength);
+                b.Property(x => x.EffectiveFrom).HasColumnName(nameof(Salary.EffectiveFrom)).IsRequired();
+                b.Property(x => x.EffectiveTo).HasColumnName(nameof(Salary.EffectiveTo));
+                b.Property(x => x.TotalAmount).HasColumnName(nameof(Salary.TotalAmount));
+                b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
+            });
 
             builder.Entity<Department>(b =>
             {

@@ -41,9 +41,6 @@ public class HealthCareMenuContributor : IMenuContributor
         administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
         administration.SetSubItemOrder(SettingManagementMenus.GroupName, 3);
 
-        
-
-        
 
         context.Menu.AddItem(
             new ApplicationMenuItem(
@@ -52,6 +49,15 @@ public class HealthCareMenuContributor : IMenuContributor
                 url: "/departments",
                 icon: "fa fa-file-alt",
                 requiredPermissionName: HealthCarePermissions.Departments.Default)
+        );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                HealthCareMenus.Employees,
+                l["Menu:Employees"],
+                url: "/employees",
+                icon: "fa fa-file-alt",
+                requiredPermissionName: HealthCarePermissions.Employees.Default)
         );
 
         return Task.CompletedTask;

@@ -15,6 +15,7 @@ using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
+using Pusula.Training.HealthCare.Salaries;
 
 
 namespace Pusula.Training.HealthCare.EntityFrameworkCore;
@@ -51,6 +52,7 @@ public class HealthCareEntityFrameworkCoreModule : AbpModule
 
             options.AddRepository<Employee, EfCoreEmployeeRepository>();
             options.AddRepository<Department, EfCoreDepartmentRepository>();
+            options.AddRepository<Salary, EfCoreSalaryRepository>();
 
 
         });
