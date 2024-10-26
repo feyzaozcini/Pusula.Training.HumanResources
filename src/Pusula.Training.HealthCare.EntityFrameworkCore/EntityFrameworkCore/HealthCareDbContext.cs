@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pusula.Training.HealthCare.Departments;
+using Pusula.Training.HealthCare.Employees;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -27,7 +28,8 @@ public class HealthCareDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Department> Departments { get; set; } = null!;
-   
+    public DbSet<Employee> Employees { get; set; } = null!;
+
 
     #region Entities from the modules
 
@@ -81,7 +83,21 @@ public class HealthCareDbContext :
         /* Configure your own tables/entities inside here */
         if (builder.IsHostDatabase())
         {
-            
+
+            builder.Entity<Employee>(b =>
+            {
+                b.ToTable(HealthCareConsts.DbTablePrefix + "Employees", HealthCareConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.FirstName).HasColumnName(nameof(Employee.FirstName)).IsRequired().HasMaxLength(EmployeeConst.FirstNameMaxLength);
+                b.Property(x => x.LastName).HasColumnName(nameof(Employee.LastName)).IsRequired().HasMaxLength(EmployeeConst.LastNameMaxLength);
+                b.Property(x => x.IdentityNumber).HasColumnName(nameof(Employee.IdentityNumber)).IsRequired().HasMaxLength(EmployeeConst.IdentityNumberMaxLength);
+                b.Property(x => x.BirthDate).HasColumnName(nameof(Employee.BirthDate)).IsRequired();
+                b.Property(x => x.Email).HasColumnName(nameof(Employee.Email)).IsRequired().HasMaxLength(EmployeeConst.EmailMaxLength);
+                b.Property(x => x.MobilePhoneNumber).HasColumnName(nameof(Employee.MobilePhoneNumber)).IsRequired().HasMaxLength(EmployeeConst.MobilePhoneNumberMaxLength);
+                b.Property(x => x.Gender).HasColumnName(nameof(Employee.Gender)).IsRequired();
+                b.HasOne<Department>().WithMany().IsRequired().HasForeignKey(x => x.DepartmentId).OnDelete(DeleteBehavior.NoAction);
+            });
+
 
             builder.Entity<Department>(b =>
             {
@@ -89,11 +105,6 @@ public class HealthCareDbContext :
                 b.ConfigureByConvention();
                 b.Property(x => x.Name).HasColumnName(nameof(Department.Name)).IsRequired().HasMaxLength(DepartmentConsts.NameMaxLength);
             });
-
-            
-
-            
-
             
         }
 

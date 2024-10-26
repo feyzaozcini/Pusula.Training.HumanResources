@@ -14,6 +14,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 using Pusula.Training.HealthCare.Departments;
+using Pusula.Training.HealthCare.Employees;
 
 
 namespace Pusula.Training.HealthCare.EntityFrameworkCore;
@@ -48,9 +49,10 @@ public class HealthCareEntityFrameworkCoreModule : AbpModule
              * default repositories only for aggregate roots */
             options.AddDefaultRepositories(includeAllEntities: true);
 
-           
+            options.AddRepository<Employee, EfCoreEmployeeRepository>();
             options.AddRepository<Department, EfCoreDepartmentRepository>();
-            
+
+
         });
 
         Configure<AbpDbContextOptions>(options =>
