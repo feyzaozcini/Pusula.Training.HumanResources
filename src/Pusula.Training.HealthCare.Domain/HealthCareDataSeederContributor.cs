@@ -1,5 +1,6 @@
 ﻿using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
+using Pusula.Training.HealthCare.Leaves;
 using Pusula.Training.HealthCare.Salaries;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Volo.Abp.Guids;
 
 namespace Pusula.Training.HealthCare
 {
-    public class HealthCareDataSeederContributor(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ISalaryRepository salaryRepository,
+    public class HealthCareDataSeederContributor(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ISalaryRepository salaryRepository, ILeaveRepository leaveRepository,
 
         IGuidGenerator guidGenerator) : IDataSeedContributor, ITransientDependency
     {
@@ -22,7 +23,7 @@ namespace Pusula.Training.HealthCare
 
             var employee=await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department.Id,"Ahmet", "Yılmaz", "14454540578", new System.DateTime(1990, 05, 20), "feyza@gmail.com","5353771043",EnumGender.Female), true);
 
-            
+            var leave = await leaveRepository.InsertAsync(new Leave(guidGenerator.Create(), employee.Id, new System.DateTime(2021, 05, 20), new System.DateTime(2021, 05, 25), LeaveType.AnnualLeave, "Yıllık izin"), true);
 
         }
     }

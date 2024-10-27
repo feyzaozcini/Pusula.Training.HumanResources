@@ -13,7 +13,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace Pusula.Training.HealthCare.Leaves
 {
     public class EfCoreLeaveRepository(IDbContextProvider<HealthCareDbContext> dbContextProvider)
-        : EfCoreRepository<HealthCareDbContext, Leave, Guid>(dbContextProvider), ILevaeRepository
+        : EfCoreRepository<HealthCareDbContext, Leave, Guid>(dbContextProvider), ILeaveRepository
     {
         public virtual async Task DeleteAllAsync(string? filterText = null, DateTime? startDate = null, DateTime? endDate = null, LeaveType? leaveType = null, string? description = null, Guid? employeeId = null, CancellationToken cancellationToken = default)
         {

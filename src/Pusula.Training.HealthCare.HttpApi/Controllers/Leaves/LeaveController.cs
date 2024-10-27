@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Content;
+using Volo.Abp;
 
-namespace Pusula.Training.HealthCare.Controllers
+namespace Pusula.Training.HealthCare.Controllers.Leaves
 {
     [RemoteService]
     [Area("app")]
@@ -54,12 +54,11 @@ namespace Pusula.Training.HealthCare.Controllers
 
         [HttpDelete]
         [Route("")]
-        public Task DeleteByIdsAsync(List<Guid> leavesId) => doctorsAppService.DeleteByIdsAsync(doctorIds);
+        public Task DeleteByIdsAsync(List<Guid> leavesId) => leaveAppService.DeleteByIdsAsync(leavesId);
 
         [HttpDelete]
         [Route("all")]
         public Task DeleteAllAsync(GetLeavesInput input) => leaveAppService.DeleteAllAsync(input);
-
 
     }
 }

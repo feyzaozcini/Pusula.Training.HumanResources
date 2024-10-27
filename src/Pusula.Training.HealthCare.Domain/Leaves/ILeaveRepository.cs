@@ -10,7 +10,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Pusula.Training.HealthCare.Leaves
 {
-    public interface ILevaeRepository : IRepository<Leave, Guid>
+    public interface ILeaveRepository : IRepository<Leave, Guid>
     {
         Task DeleteAllAsync(
             string? filterText = null,

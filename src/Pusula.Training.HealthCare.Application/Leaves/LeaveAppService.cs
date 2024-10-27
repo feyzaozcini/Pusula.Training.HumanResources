@@ -24,7 +24,7 @@ namespace Pusula.Training.HealthCare.Leaves
 {
     [RemoteService(IsEnabled = false)]
     [Authorize(HealthCarePermissions.Leaves.Default)]
-    public class LeaveAppService(ILevaeRepository levaeRepository,
+    public class LeaveAppService(ILeaveRepository levaeRepository,
         LeaveManager leaveManager,
         IDistributedCache<LeaveDownloadTokenCacheItem, string> downloadTokenCache,
         IEmployeeRepository employeeRepository,

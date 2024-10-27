@@ -5,7 +5,7 @@ using Volo.Abp.Domain.Services;
 
 namespace Pusula.Training.HealthCare.Leaves
 {
-    public class LeaveManager(ILevaeRepository leaveRepository) : DomainService
+    public class LeaveManager(ILeaveRepository leaveRepository) : DomainService
     {
         public virtual async Task<Leave> CreateAsync(Guid employeeId, DateTime startDate, DateTime endDate, LeaveType leaveType, string description)
         {
