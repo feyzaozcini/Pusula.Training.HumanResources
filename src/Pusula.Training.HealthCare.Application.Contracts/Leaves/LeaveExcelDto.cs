@@ -18,7 +18,6 @@ namespace Pusula.Training.HealthCare.Leaves
 
         public string Description { get; set; } = null!;
 
-        
         public string Employee { get; set; } = null!;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
 using Pusula.Training.HealthCare.Leaves;
@@ -29,17 +30,23 @@ public class HealthCareApplicationAutoMapperProfile : Profile
         CreateMap<Employee, EmployeeDto>();
         CreateMap<Employee, EmployeeExcelDto>();
         CreateMap<Employee, EmployeeWithNavigationPropertiesDto>();
+        CreateMap<EmployeeDto, EmployeeUpdateDto>();
+        CreateMap<Department, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name));
         CreateMap<EmployeeWithNavigationProperties, EmployeeWithNavigationPropertiesDto>();
 
         CreateMap<Salary, SalaryDto>();
         CreateMap<Salary, SalaryExcelDto>();
         CreateMap<Salary, SalaryWithNavigationPropertiesDto>();
         CreateMap<SalaryWithNavigationProperties, SalaryWithNavigationPropertiesDto>();
+        CreateMap<SalaryDto, SalaryUpdateDto>();
+
 
         CreateMap<Leave, LeaveDto>();
         CreateMap<Leave, LeaveExcelDto>();
         CreateMap<Leave, LeaveWithNavigationPropertiesDto>();
-        CreateMap<LeaveWithNavigationProperties, LeaveWithNavigationPropertiesDto>();
+        CreateMap<LeaveDto, LeaveUpdateDto>();
+        CreateMap<Leave, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Id));
+
 
     }
 }

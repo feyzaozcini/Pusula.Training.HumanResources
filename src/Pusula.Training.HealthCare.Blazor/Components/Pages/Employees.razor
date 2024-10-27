@@ -1,5 +1,4 @@
 ﻿@page "/employees"
-
 @attribute [Authorize(HealthCarePermissions.Employees.Default)]
 @using Pusula.Training.HealthCare.Employees
 @using Pusula.Training.HealthCare.Localization
@@ -28,6 +27,170 @@
 @inject IRemoteServiceConfigurationProvider RemoteServiceConfigurationProvider
 @inject NavigationManager NavigationManager
 
-@code {
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Employees"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
 
-}
+</PageHeader>
+
+<Card>
+    <CardBody>
+        @*//<suite-custom-code-block-1>*@
+        @*//</suite-custom-code-block-1>*@
+        <Form id="EmployeeSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="EmployeeSearchForm" Clicked="GetEmployeesAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+
+        <Row Class="mt-3 mb-3">
+            <div class="col-md-12">
+                <a href="javascript:;" class="text-decoration-none" @onclick="() => ShowAdvancedFilters = !ShowAdvancedFilters">@L["SeeAdvancedFilters"]</a>
+            </div>
+        </Row>
+
+        <div style="display: @(!ShowAdvancedFilters ? "none" : "block")">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["FirstName"]</FieldLabel>
+                        <TextEdit Text="@Filter.FirstName" TextChanged="@OnFirstNameChangedAsync" />
+                    </Field>
+                </Column>
+            </Row>
+            @*//<suite-custom-code-block-2>*@
+            @*//</suite-custom-code-block-2>*@
+        </div>
+
+        @*//<suite-custom-code-block-3>*@
+        @*//</suite-custom-code-block-3>*@
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        @if (SelectedEmployee.Any())
+        {
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                @if (AllEmployeesSelected)
+                {
+                    <p class="lead mb-0">
+                        @L["AllItemsAreSelected", TotalCount]
+                    </p>
+                }
+                else
+                {
+                    <p class="lead mb-0">
+                        @if (SelectedEmployee.Count > 1)
+                        {
+                            @L["NumberOfItemsOnThisPageAreSelected", SelectedEmployee.Count]
+                        }
+                        else
+                        {
+                            @L["OneItemOnThisPageIsSelected"]
+                        }
+                    </p>
+                }
+
+                <div>
+                    @if ((SelectedEmployee.Count == PageSize || SelectedEmployee.Count == EmployeeList.Count) && TotalCount > SelectedEmployee.Count)
+                    {
+                        if (!AllEmployeesSelected)
+                        {
+                            <Button Clicked="SelectAllItems" Class="mx-1 btn-outline-secondary">@L["SelectAllItems", TotalCount]</Button>
+                        }
+                        else
+                        {
+                            <Button Clicked="ClearSelection" Class="mx-1 btn-outline-secondary">@L["ClearSelection"]</Button>
+                        }
+                    }
+
+                    <Button Color="Color.Danger" Class="mx-1" Size="Size.Medium" Clicked="DeleteSelectedEmployeesAsync">
+                        <Icon Name="@IconName.Delete" /> @L["Delete"]
+                    </Button>
+                </div>
+            </div>
+
+            <hr class="my-1 mx-0" />
+        }
+        <DataGrid TItem="EmployeeWithNavigationPropertiesDto"
+                  Data="EmployeeList"
+                  SelectionMode="DataGridSelectionMode.Multiple"
+                  SelectedRows="SelectedEmployee"
+                  RowSelectable="@((args) => CanDeleteEmployee)"
+                  SelectedRowsChanged="SelectedEmployeeRowsChanged"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize"
+                  Class="datagrid-detail">
+            <LoadingTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <RadarSpinner />
+                    </Column>
+                </Row>
+            </LoadingTemplate>
+            <EmptyTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <Heading Size="HeadingSize.Is4" TextAlignment="TextAlignment.Center">@L["NoDataAvailable"]</Heading>
+                    </Column>
+                </Row>
+            </EmptyTemplate>
+            <DataGridColumns>
+
+                @if (CanDeleteEmployee && EmployeeList.Any())
+                {
+                    <DataGridMultiSelectColumn TItem="EmployeeWithNavigationPropertiesDto" DisplayOrder="-1" Width="30px"></DataGridMultiSelectColumn>
+                }
+
+                <DataGridEntityActionsColumn TItem="EmployeeWithNavigationPropertiesDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="EmployeeWithNavigationPropertiesDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="EmployeeWithNavigationPropertiesDto"
+                                          Visible="@CanEditEmployee"
+                                          Clicked="async () => await OpenEditEmployeeModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="EmployeeWithNavigationPropertiesDto"
+                                          Visible="@CanDeleteEmployee"
+                                          Clicked="() => DeleteEmployeeAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                            @*//<suite-custom-code-block-4>*@
+                            @*//</suite-custom-code-block-4>*@
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Employee.FirstName"
+                                Caption="@L["Firstname"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Employee.LastName"
+                                Caption="@L["LastName"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Employee.Email"
+                                Caption="@L["Email"]">
+                </DataGridColumn>
+
+
+            </DataGridColumns>
+
+
+        </DataGrid>
+    </CardBody>
+</Card>

@@ -1,10 +1,11 @@
 ﻿
 using System;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Domain.Entities;
 
 namespace Pusula.Training.HealthCare.Employees
 {
-    public class EmployeeUpdateDto
+    public class EmployeeUpdateDto : IHasConcurrencyStamp
     {
         [Required]
         public Guid Id { get; set; } = default!;
@@ -40,5 +41,6 @@ namespace Pusula.Training.HealthCare.Employees
         [Required]
         public Guid DepartmentId { get; set; }
 
+        public string ConcurrencyStamp { get; set; } = null!;
     }
 }

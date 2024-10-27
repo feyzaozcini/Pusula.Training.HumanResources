@@ -2,10 +2,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 
 namespace Pusula.Training.HealthCare.Employees
 {
-    public class EmployeeDto : FullAuditedEntityDto<Guid>
+    public class EmployeeDto : FullAuditedEntityDto<Guid>, IHasConcurrencyStamp
     {
         public string FirstName { get; set; } = null!;
 
@@ -23,7 +24,7 @@ namespace Pusula.Training.HealthCare.Employees
 
         public Guid DepartmentId { get; set; }
 
+        public string ConcurrencyStamp { get; set; } = null!;
 
-        
     }
 }
