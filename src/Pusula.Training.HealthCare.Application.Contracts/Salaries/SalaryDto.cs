@@ -10,17 +10,17 @@ namespace Pusula.Training.HealthCare.Salaries
 {
     public class SalaryDto : FullAuditedEntityDto<Guid>
     {
-        public decimal BaseAmount { get; set; }
+        public decimal BaseAmount { get; set; } 
 
-        public decimal? Bonus { get; set; }
+        public decimal Bonus { get; set; }
 
-        public decimal? Deduction { get; set; }
+        public decimal Deduction { get; set; }
       
         public DateTime EffectiveFrom { get; set; }
 
-        public DateTime? EffectiveTo { get; set; }
+        public DateTime EffectiveTo { get; set; }
 
-        public decimal? TotalAmount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public Guid EmployeeId { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
+using Pusula.Training.HealthCare.Leaves;
 using Pusula.Training.HealthCare.Salaries;
 using Pusula.Training.HealthCare.Shared;
 
@@ -35,6 +36,10 @@ public class HealthCareApplicationAutoMapperProfile : Profile
         CreateMap<Salary, SalaryWithNavigationPropertiesDto>();
         CreateMap<SalaryWithNavigationProperties, SalaryWithNavigationPropertiesDto>();
 
+        CreateMap<Leave, LeaveDto>();
+        CreateMap<Leave, LeaveExcelDto>();
+        CreateMap<Leave, LeaveWithNavigationPropertiesDto>();
+        CreateMap<LeaveWithNavigationProperties, LeaveWithNavigationPropertiesDto>();
 
     }
 }

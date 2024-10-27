@@ -33,6 +33,13 @@ public class HealthCarePermissionDefinitionProvider : PermissionDefinitionProvid
         salaryPermission.AddChild(HealthCarePermissions.Salaries.Edit, L("Permission:Edit"));
         salaryPermission.AddChild(HealthCarePermissions.Salaries.Delete, L("Permission:Delete"));
 
+        var leavePermission = myGroup.AddPermission(HealthCarePermissions.Leaves.Default, L("Permission:Leave"));
+        leavePermission.AddChild(HealthCarePermissions.Leaves.Create, L("Permission:Create"));
+        leavePermission.AddChild(HealthCarePermissions.Leaves.Edit, L("Permission:Edit"));
+        leavePermission.AddChild(HealthCarePermissions.Leaves.Delete, L("Permission:Delete"));
+
+
+
 
     }
 

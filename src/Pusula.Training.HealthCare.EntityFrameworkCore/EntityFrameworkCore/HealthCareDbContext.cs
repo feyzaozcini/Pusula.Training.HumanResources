@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pusula.Training.HealthCare.Departments;
 using Pusula.Training.HealthCare.Employees;
+using Pusula.Training.HealthCare.Leaves;
 using Pusula.Training.HealthCare.Salaries;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -111,6 +112,18 @@ public class HealthCareDbContext :
                 b.Property(x => x.TotalAmount).HasColumnName(nameof(Salary.TotalAmount));
                 b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
             });
+
+            builder.Entity<Leave>(b =>
+            {
+                b.ToTable(HealthCareConsts.DbTablePrefix + "Leaves", HealthCareConsts.DbSchema);
+                b.ConfigureByConvention();
+                b.Property(x => x.StartDate).HasColumnName(nameof(Leave.StartDate)).IsRequired();
+                b.Property(x => x.EndDate).HasColumnName(nameof(Leave.EndDate)).IsRequired();
+                b.Property(x => x.LeaveType).HasColumnName(nameof(Leave.LeaveType)).IsRequired();
+                b.Property(x => x.Description).HasColumnName(nameof(Leave.Description));
+                b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
+            }
+            );
 
             builder.Entity<Department>(b =>
             {
