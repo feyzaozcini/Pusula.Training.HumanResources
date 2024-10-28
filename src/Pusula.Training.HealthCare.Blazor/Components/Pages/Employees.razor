@@ -173,7 +173,14 @@
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
-
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Department.Name"
+                                Caption="@L["Department"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Employee.IdentityNumber"
+                                Caption="@L["IdentityNumber"]">
+                </DataGridColumn>
                 <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
                                 Field="Employee.FirstName"
                                 Caption="@L["Firstname"]">
@@ -186,6 +193,10 @@
                                 Field="Employee.Email"
                                 Caption="@L["Email"]">
                 </DataGridColumn>
+                <DataGridColumn TItem="EmployeeWithNavigationPropertiesDto"
+                                Field="Employee.MobilePhoneNumber"
+                                Caption="@L["MobilePhoneNumber"]">
+                </DataGridColumn>
 
 
             </DataGridColumns>
@@ -194,3 +205,261 @@
         </DataGrid>
     </CardBody>
 </Card>
+
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateEmployeeModal" Closing="@CreateEmployeeModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-5>*@
+        @*//</suite-custom-code-block-5>*@
+        <Form id="CreateEmployeeForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewEmployee"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateEmployeeModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewEmployeeValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@NewEmployee"
+                             ValidateOnLoad="false">
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["FirstName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.FirstName" MaxLength="EmployeeConst.FirstNameMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["LastName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.LastName" MaxLength="EmployeeConst.LastNameMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["IdentityNumber"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.IdentityNumber" MaxLength="EmployeeConst.IdentityNumberMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["BirthDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewEmployee.BirthDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Email"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.Email" MaxLength="EmployeeConst.EmailMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["MobilePhoneNumber"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.MobilePhoneNumber" MaxLength="EmployeeConst.MobilePhoneNumberMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Gender"]</FieldLabel>
+                            <Select TValue="EnumGender" @bind-SelectedValue="NewEmployee.Gender">
+                                @foreach (var gender in GendersCollection)
+                                {
+                                    <SelectItem TValue="EnumGender" Value="@(gender.Id)">
+                                        @(gender.DisplayName)
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+
+                    <Field>
+                        <FieldLabel>@L["Department"]</FieldLabel>
+                        <Select TValue="Guid" @bind-SelectedValue="@NewEmployee.DepartmentId">
+                            @foreach (var department in DepartmentsCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@(department.Id)">
+                                    @(department.DisplayName)
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateEmployeeModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateEmployeeForm" Clicked="CreateEmployeeAsync" />
+                @*//<suite-custom-code-block-6>*@
+                @*//</suite-custom-code-block-6>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-7>*@
+        @*//</suite-custom-code-block-7>*@
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditEmployeeModal" Closing="@EditEmployeeModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-8>*@
+        @*//</suite-custom-code-block-8>*@
+        <Form id="EditEmployeeForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditEmployeeModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingEmployeeValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@EditingEmployee"
+                             ValidateOnLoad="false">
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["FirstName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.FirstName" MaxLength="EmployeeConst.FirstNameMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["LastName"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.LastName" MaxLength="EmployeeConst.LastNameMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["IdentityNumber"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.IdentityNumber" MaxLength="EmployeeConst.IdentityNumberMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["BirthDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewEmployee.BirthDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Email"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.Email" MaxLength="EmployeeConst.EmailMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["MobilePhoneNumber"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEmployee.MobilePhoneNumber" MaxLength="EmployeeConst.MobilePhoneNumberMaxLength">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Gender"]</FieldLabel>
+                            <Select TValue="EnumGender" @bind-SelectedValue="NewEmployee.Gender">
+                                @foreach (var gender in GendersCollection)
+                                {
+                                    <SelectItem TValue="EnumGender" Value="@(gender.Id)">
+                                        @(gender.DisplayName)
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+
+                    <Field>
+                        <FieldLabel>@L["Department"]</FieldLabel>
+                        <Select TValue="Guid" @bind-SelectedValue="@NewEmployee.DepartmentId">
+                            @foreach (var department in DepartmentsCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@(department.Id)">
+                                    @(department.DisplayName)
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+
+
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditEmployeeModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="EditEmployeeForm" Clicked="UpdateEmployeeAsync" />
+                @*//<suite-custom-code-block-9>*@
+                @*//</suite-custom-code-block-9>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-10>*@
+        @*//</suite-custom-code-block-10>*@
+    </ModalContent>
+</Modal>
+

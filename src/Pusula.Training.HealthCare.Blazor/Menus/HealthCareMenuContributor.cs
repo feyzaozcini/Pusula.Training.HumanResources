@@ -60,6 +60,14 @@ public class HealthCareMenuContributor : IMenuContributor
                 requiredPermissionName: HealthCarePermissions.Employees.Default)
         );
 
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                HealthCareMenus.Leaves,
+                l["Menu:Leaves"],
+                url: "/leaves",
+                icon: "fa fa-file-alt",
+                requiredPermissionName: HealthCarePermissions.Leaves.Default)
+        );
         return Task.CompletedTask;
     }
 

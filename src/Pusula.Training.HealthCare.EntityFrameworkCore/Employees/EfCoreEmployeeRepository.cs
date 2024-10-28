@@ -39,9 +39,9 @@ namespace Pusula.Training.HealthCare.Employees
 
         public virtual async Task<long> GetCountAsync(
             string? filterText = null, 
-            string? firstName = null, string? 
-            lastName = null, string? 
-            identityNumber = null, 
+            string? firstName = null, 
+            string? lastName = null, 
+            string? identityNumber = null, 
             DateTime? birthDateMin = null, 
             DateTime? birthDateMax = null, 
             string? email = null, string? 

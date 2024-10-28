@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Pusula.Training.HealthCare.Employees;
 using Pusula.Training.HealthCare.Permissions;
+using Pusula.Training.HealthCare.Shared;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -36,15 +38,15 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
         private EmployeeUpdateDto EditingEmployee { get; set; }
         private Validations EditingEmployeeValidations { get; set; } = new();
         private Guid EditingEmployeeId { get; set; }
-        private Modal CreatEmployeeModal { get; set; } = new();
+        private Modal CreateEmployeeModal { get; set; } = new();
         private Modal EditEmployeeModal { get; set; } = new();
         private GetEmployeeInput Filter { get; set; }
         private DataGridEntityActionsColumn<EmployeeWithNavigationPropertiesDto> EntityActionsColumn { get; set; } = new();
         protected string SelectedCreateTab = "employee-create-tab";
         protected string SelectedEditTab = "employee-edit-tab";
 
-
-
+        private IReadOnlyList<LookupDto<Guid>> DepartmentsCollection { get; set; } = [];
+        private IReadOnlyList<LookupDto<EnumGender>> GendersCollection { get; set; } = new List<LookupDto<EnumGender>>();
         private List<EmployeeWithNavigationPropertiesDto> SelectedEmployee { get; set; } = [];
         private bool AllEmployeesSelected { get; set; }
 
@@ -64,6 +66,15 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
         protected override async Task OnInitializedAsync()
         {
             await SetPermissionsAsync();
+            await GetDepartmentCollectionLookupAsync();
+            GendersCollection = Enum.GetValues(typeof(EnumGender))
+           .Cast<EnumGender>()
+           .Select(g => new LookupDto<EnumGender>
+           {
+               Id = g,
+               DisplayName = g.ToString()
+           })
+           .ToList();
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -151,7 +162,7 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
             SelectedCreateTab = "employee-create-tab";
 
             await NewEmployeeValidations.ClearAll();
-            await CreatEmployeeModal.Show();
+            await CreateEmployeeModal.Show();
         }
 
         private async Task CloseCreateEmployeeModalAsync()
@@ -161,7 +172,7 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
 
             };
 
-            await CreatEmployeeModal.Hide();
+            await CreateEmployeeModal.Hide();
         }
 
         private async Task OpenEditEmployeeModalAsync(EmployeeWithNavigationPropertiesDto input)
@@ -264,6 +275,11 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
             }
 
             return Task.CompletedTask;
+        }
+
+        private async Task GetDepartmentCollectionLookupAsync(string? newValue = null)
+        {
+            DepartmentsCollection = (await EmployeeAppService.GetDepartmentLookupAsync(new LookupRequestDto { Filter = newValue })).Items;
         }
 
         private async Task DeleteSelectedEmployeesAsync()

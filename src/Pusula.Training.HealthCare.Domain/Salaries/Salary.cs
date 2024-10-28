@@ -17,8 +17,7 @@ namespace Pusula.Training.HealthCare.Salaries
         public virtual DateTime EffectiveFrom { get; set; }   // Maaşın geçerli olduğu başlangıç tarihi
         [CanBeNull]
         public virtual DateTime EffectiveTo { get; set; }
-        [CanBeNull]
-        public virtual decimal TotalAmount { get; set; }
+        
 
             
 
@@ -30,7 +29,7 @@ namespace Pusula.Training.HealthCare.Salaries
             EffectiveFrom = DateTime.Now;
         }
 
-        public Salary(Guid id, Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo, decimal totalAmount)
+        public Salary(Guid id, Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo)
         {
             Check.NotNull(baseAmount, nameof(baseAmount));
             Check.Range(baseAmount, nameof(baseAmount), SalaryConst.BaseAmountMinLength, SalaryConst.BaseAmountMaxLength);
@@ -46,7 +45,6 @@ namespace Pusula.Training.HealthCare.Salaries
             Deduction = deduction;
             EffectiveFrom = effectiveFrom;
             EffectiveTo = effectiveTo;
-            TotalAmount = totalAmount;
         }
     }
 }

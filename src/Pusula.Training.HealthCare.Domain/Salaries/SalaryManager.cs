@@ -8,7 +8,7 @@ namespace Pusula.Training.HealthCare.Salaries
     public class SalaryManager(ISalaryRepository salaryRepository) : DomainService
     {
         public virtual async Task<Salary> CreateAsync(
-             Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo, decimal totalAmount)
+             Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo)
         {
             Check.NotNull(baseAmount, nameof(baseAmount));
             Check.Range(baseAmount, nameof(baseAmount), SalaryConst.BaseAmountMinLength, SalaryConst.BaseAmountMaxLength);
@@ -18,14 +18,14 @@ namespace Pusula.Training.HealthCare.Salaries
             Check.NotNullOrWhiteSpace(employeeId.ToString(), nameof(employeeId));
 
             var salary = new Salary(
-                GuidGenerator.Create(), employeeId, baseAmount,bonus, deduction, effectiveFrom, effectiveTo, totalAmount
+                GuidGenerator.Create(), employeeId, baseAmount,bonus, deduction, effectiveFrom, effectiveTo
                 );
 
             return await salaryRepository.InsertAsync(salary);
         }
 
         public virtual async Task<Salary> UpdateAsync(
-            Guid id, Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo, decimal totalAmount)
+            Guid id, Guid employeeId, decimal baseAmount, decimal bonus, decimal deduction, DateTime effectiveFrom, DateTime effectiveTo)
         {
 
             Check.NotNull(baseAmount, nameof(baseAmount));
@@ -43,8 +43,6 @@ namespace Pusula.Training.HealthCare.Salaries
             salary.Deduction = deduction;
             salary.EffectiveFrom = effectiveFrom;
             salary.EffectiveTo = effectiveTo;
-            salary.TotalAmount = totalAmount;
-
             return await salaryRepository.UpdateAsync(salary);
 
         }

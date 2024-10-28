@@ -109,7 +109,6 @@ public class HealthCareDbContext :
                 b.Property(x => x.Deduction).HasColumnName(nameof(Salary.Deduction)).HasMaxLength((int)SalaryConst.DeductionMaxLength);
                 b.Property(x => x.EffectiveFrom).HasColumnName(nameof(Salary.EffectiveFrom)).IsRequired();
                 b.Property(x => x.EffectiveTo).HasColumnName(nameof(Salary.EffectiveTo));
-                b.Property(x => x.TotalAmount).HasColumnName(nameof(Salary.TotalAmount));
                 b.HasOne<Employee>().WithMany().IsRequired().HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.NoAction);
             });
 

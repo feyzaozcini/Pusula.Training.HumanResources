@@ -16,7 +16,6 @@ namespace Pusula.Training.HealthCare.Employees
         public string LastName { get; set; }
         
         [Required]
-        [RegularExpression(@"^[1-9]{1}[0-9]{9}[02468]{1}$")]
         [StringLength(EmployeeConst.IdentityNumberMaxLength)]
         public string IdentityNumber { get; set; }
 

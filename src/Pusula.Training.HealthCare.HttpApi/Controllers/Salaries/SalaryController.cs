@@ -20,30 +20,30 @@ namespace Pusula.Training.HealthCare.Controllers.Salaries
     public class SalaryController(ISalaryAppService salaryAppService) : HealthCareController, ISalaryAppService
     {
         [HttpGet]
-        public Task<PagedResultDto<SalaryWithNavigationPropertiesDto>> GetListAsync(GetSalaryInput input) => salaryAppService.GetListAsync(input);
+        public virtual Task<PagedResultDto<SalaryWithNavigationPropertiesDto>> GetListAsync(GetSalaryInput input) => salaryAppService.GetListAsync(input);
 
         [HttpGet]
         [Route("with-navigation-properties/{id}")]
-        public Task<SalaryWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id) => salaryAppService.GetWithNavigationPropertiesAsync(id);
+        public virtual Task<SalaryWithNavigationPropertiesDto> GetWithNavigationPropertiesAsync(Guid id) => salaryAppService.GetWithNavigationPropertiesAsync(id);
 
         [HttpGet]
         [Route("{id}")]
-        public Task<SalaryDto> GetAsync(Guid id) => salaryAppService.GetAsync(id);
+        public virtual Task<SalaryDto> GetAsync(Guid id) => salaryAppService.GetAsync(id);
 
         [HttpGet]
         [Route("employee-lookup")]
-        public Task<PagedResultDto<LookupDto<Guid>>> GetEmployeeLookupAsync(LookupRequestDto input) => salaryAppService.GetEmployeeLookupAsync(input);
+        public virtual Task<PagedResultDto<LookupDto<Guid>>> GetEmployeeLookupAsync(LookupRequestDto input) => salaryAppService.GetEmployeeLookupAsync(input);
 
 
         [HttpPost]
-        public Task<SalaryDto> CreateAsync(SalaryCreateDto input) => salaryAppService.CreateAsync(input);
+        public virtual Task<SalaryDto> CreateAsync(SalaryCreateDto input) => salaryAppService.CreateAsync(input);
 
         [HttpPut]
-        public Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input) => salaryAppService.UpdateAsync(id, input);
+        public virtual Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input) => salaryAppService.UpdateAsync(id, input);
 
         [HttpDelete]
         [Route("{id}")]
-        public Task DeleteAsync(Guid id) => salaryAppService.DeleteAsync(id);
+        public virtual Task DeleteAsync(Guid id) => salaryAppService.DeleteAsync(id);
 
         [HttpDelete]
         [Route("all")]
@@ -56,11 +56,11 @@ namespace Pusula.Training.HealthCare.Controllers.Salaries
 
         [HttpGet]
         [Route("download-token")]
-        public Task<DownloadTokenResultDto> GetDownloadTokenAsync() => salaryAppService.GetDownloadTokenAsync();
+        public virtual Task<DownloadTokenResultDto> GetDownloadTokenAsync() => salaryAppService.GetDownloadTokenAsync();
 
         [HttpGet]
         [Route("as-excel-file")]
-        public Task<IRemoteStreamContent> GetListAsExcelFileAsync(SalaryExcelDownloadDto input) => salaryAppService.GetListAsExcelFileAsync(input);
+        public virtual Task<IRemoteStreamContent> GetListAsExcelFileAsync(SalaryExcelDownloadDto input) => salaryAppService.GetListAsExcelFileAsync(input);
 
 
     }

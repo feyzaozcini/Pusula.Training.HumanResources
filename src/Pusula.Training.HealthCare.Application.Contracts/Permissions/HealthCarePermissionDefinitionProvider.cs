@@ -28,7 +28,7 @@ public class HealthCarePermissionDefinitionProvider : PermissionDefinitionProvid
         employeePermission.AddChild(HealthCarePermissions.Employees.Edit, L("Permission:Edit"));
         employeePermission.AddChild(HealthCarePermissions.Employees.Delete, L("Permission:Delete"));
 
-        var salaryPermission = myGroup.AddPermission(HealthCarePermissions.Salaries.Default, L("Permission:Salary"));
+        var salaryPermission = myGroup.AddPermission(HealthCarePermissions.Salaries.Default, L("Permission:Salaries"));
         salaryPermission.AddChild(HealthCarePermissions.Salaries.Create, L("Permission:Create"));
         salaryPermission.AddChild(HealthCarePermissions.Salaries.Edit, L("Permission:Edit"));
         salaryPermission.AddChild(HealthCarePermissions.Salaries.Delete, L("Permission:Delete"));

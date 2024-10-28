@@ -1,0 +1,467 @@
+﻿@page "/leaves"
+
+@attribute [Authorize(HealthCarePermissions.Leaves.Default)]
+@using Pusula.Training.HealthCare.Leaves
+@using Pusula.Training.HealthCare.Localization
+@using Pusula.Training.HealthCare.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Components.Web
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.DataGrid
+@using Volo.Abp.BlazoriseUI
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+
+@using Pusula.Training.HealthCare.Permissions
+@using Volo.Abp.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components
+@using Volo.Abp.Http.Client
+@inherits HealthCareComponentBase
+@inject ILeaveAppService LeaveAppService
+
+@inject IUiMessageService UiMessageService
+@inject AbpBlazorMessageLocalizerHelper<HealthCareResource> LH
+@inject IRemoteServiceConfigurationProvider RemoteServiceConfigurationProvider
+@inject NavigationManager NavigationManager
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Leaves"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        @*//<suite-custom-code-block-1>*@
+        @*//</suite-custom-code-block-1>*@
+        <Form id="LeaveSearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <TextEdit @bind-Text="@Filter.FilterText"
+                              Autofocus="true"
+                              Placeholder="@L["Search"]">
+                    </TextEdit>
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="LeaveSearchForm" Clicked="GetLeavesAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+
+        <Row Class="mt-3 mb-3">
+            <div class="col-md-12">
+                <a href="javascript:;" class="text-decoration-none" @onclick="() => ShowAdvancedFilters = !ShowAdvancedFilters">@L["SeeAdvancedFilters"]</a>
+            </div>
+        </Row>
+
+        <div style="display: @(!ShowAdvancedFilters ? "none" : "block")">
+            <Row>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["StartDate"]</FieldLabel>
+                        <DatePicker TValue="DateTime?"
+                                    InputMode="DateInputMode.Date"
+                                    Date="@Filter.StartDate"
+                                    DateChanged="@OnStartDateChangedAsync"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["EndDate"]</FieldLabel>
+                        <DatePicker TValue="DateTime?"
+                                    InputMode="DateInputMode.Date"
+                                    Date="@Filter.EndDate"
+                                    DateChanged="@OnEndDateChangedAsync"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["LeaveType"]</FieldLabel>
+                        <Select TValue="LeaveType" @bind-SelectedValue="NewLeave.LeaveType">
+                            @foreach (var leaveType in LeaveTypesCollection)
+                            {
+                                <SelectItem TValue="LeaveType" Value="@(leaveType.Id)">
+                                    @(leaveType.DisplayName)
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Employee"]</FieldLabel>
+                        <Select TValue="Guid?"
+                                SelectedValue="@Filter.EmployeeId"
+                                SelectedValueChanged="@OnEmployeeIdChangedAsync">
+
+                            <SelectItem></SelectItem>
+
+                            @foreach (var item in EmployeesCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@item.Id">
+                                    @item.DisplayName
+                                </SelectItem>
+                            }
+
+                        </Select>
+                    </Field>
+                </Column>
+                
+            </Row>
+            @*//<suite-custom-code-block-2>*@
+            @*//</suite-custom-code-block-2>*@
+        </div>
+
+        @*//<suite-custom-code-block-3>*@
+        @*//</suite-custom-code-block-3>*@
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        @if (SelectedLeave.Any())
+        {
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                @if (AllLeavesSelected)
+                {
+                    <p class="lead mb-0">
+                        @L["AllItemsAreSelected", TotalCount]
+                    </p>
+                }
+                else
+                {
+                    <p class="lead mb-0">
+                        @if (SelectedLeave.Count > 1)
+                        {
+                            @L["NumberOfItemsOnThisPageAreSelected", SelectedLeave.Count]
+                        }
+                        else
+                        {
+                            @L["OneItemOnThisPageIsSelected"]
+                        }
+                    </p>
+                }
+
+                <div>
+                    @if ((SelectedLeave.Count == PageSize || SelectedLeave.Count == LeaveList.Count) && TotalCount > SelectedLeave.Count)
+                    {
+                        if (!AllLeavesSelected)
+                        {
+                            <Button Clicked="SelectAllItems" Class="mx-1 btn-outline-secondary">@L["SelectAllItems", TotalCount]</Button>
+                        }
+                        else
+                        {
+                            <Button Clicked="ClearSelection" Class="mx-1 btn-outline-secondary">@L["ClearSelection"]</Button>
+                        }
+                    }
+
+                    <Button Color="Color.Danger" Class="mx-1" Size="Size.Medium" Clicked="DeleteSelectedLeavesAsync">
+                        <Icon Name="@IconName.Delete" /> @L["Delete"]
+                    </Button>
+                </div>
+            </div>
+
+            <hr class="my-1 mx-0" />
+        }
+        <DataGrid TItem="LeaveWithNavigationPropertiesDto"
+                  Data="LeaveList"
+                  SelectionMode="DataGridSelectionMode.Multiple"
+                  SelectedRows="SelectedLeave"
+                  RowSelectable="@((args) => CanDeleteLeave)"
+                  SelectedRowsChanged="SelectedLeaveRowsChanged"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize"
+                  Class="datagrid-detail">
+            <LoadingTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <RadarSpinner />
+                    </Column>
+                </Row>
+            </LoadingTemplate>
+            <EmptyTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <Heading Size="HeadingSize.Is4" TextAlignment="TextAlignment.Center">@L["NoDataAvailable"]</Heading>
+                    </Column>
+                </Row>
+            </EmptyTemplate>
+            <DataGridColumns>
+
+                @if (CanDeleteLeave && LeaveList.Any())
+                {
+                    <DataGridMultiSelectColumn TItem="LeaveWithNavigationPropertiesDto" DisplayOrder="-1" Width="30px"></DataGridMultiSelectColumn>
+                }
+
+                <DataGridEntityActionsColumn TItem="LeaveWithNavigationPropertiesDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="LeaveWithNavigationPropertiesDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="LeaveWithNavigationPropertiesDto"
+                                          Visible="@CanEditLeave"
+                                          Clicked="async () => await OpenEditLeaveModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="LeaveWithNavigationPropertiesDto"
+                                          Visible="@CanDeleteLeave"
+                                          Clicked="() => DeleteLeaveAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                            @*//<suite-custom-code-block-4>*@
+                            @*//</suite-custom-code-block-4>*@
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+
+
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Leave.StartDate"
+                                Caption="@L["StartDate"]">
+                    <DisplayTemplate>
+                        @context.Leave.StartDate.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Leave.EndDate"
+                                Caption="@L["EndDate"]">
+                    <DisplayTemplate>
+                        @context.Leave.EndDate.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Leave.LeaveType"
+                                Caption="@L["LeaveType"]">
+                    <DisplayTemplate>
+                        @context.Leave.LeaveType
+                    </DisplayTemplate> 
+                 </DataGridColumn>
+
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Employee.FirstName"
+                                Caption="@L["Employee"]">
+                </DataGridColumn>
+
+            </DataGridColumns>
+
+
+        </DataGrid>
+    </CardBody>
+</Card>
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateLeaveModal" Closing="@CreateLeaveModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-5>*@
+        @*//</suite-custom-code-block-5>*@
+        <Form id="CreateLeaveForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewLeave"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateLeaveModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewLeaveValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@NewLeave"
+                             ValidateOnLoad="false">
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["StartDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.StartDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["EndDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.EndDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["LeaveType"]</FieldLabel>
+                            <Select TValue="LeaveType" @bind-SelectedValue="NewLeave.LeaveType">
+                                @foreach (var leaveType in LeaveTypesCollection)
+                                {
+                                    <SelectItem TValue="LeaveType" Value="@(leaveType.Id)">
+                                        @(leaveType.DisplayName)
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Description"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewLeave.Description" >
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    
+                        <Field>
+                            <FieldLabel>@L["Employee"]</FieldLabel>
+                            <Select TValue="Guid?"
+                                    SelectedValue="@Filter.EmployeeId"
+                                    SelectedValueChanged="@OnEmployeeIdChangedAsync">
+
+                                <SelectItem></SelectItem>
+
+                                @foreach (var item in EmployeesCollection)
+                                {
+                                    <SelectItem TValue="Guid" Value="@item.Id">
+                                        @item.DisplayName
+                                    </SelectItem>
+                                }
+
+                            </Select>
+                        </Field>
+                    
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateLeaveModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateLeaveForm" Clicked="CreateLeaveAsync" />
+                @*//<suite-custom-code-block-6>*@
+                @*//</suite-custom-code-block-6>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-7>*@
+        @*//</suite-custom-code-block-7>*@
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditLeaveModal" Closing="@EditLeaveModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-8>*@
+        @*//</suite-custom-code-block-8>*@
+        <Form id="EditProtocolForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditLeaveModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingLeaveValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@EditingLeave"
+                             ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["StartDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.StartDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["EndDate"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.EndDate">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["LeaveType"]</FieldLabel>
+                            <Select TValue="LeaveType" @bind-SelectedValue="NewLeave.LeaveType">
+                                @foreach (var leaveType in LeaveTypesCollection)
+                                {
+                                    <SelectItem TValue="LeaveType" Value="@(leaveType.Id)">
+                                        @(leaveType.DisplayName)
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Description"] *</FieldLabel>
+                            <TextEdit @bind-Text="@NewLeave.Description">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Field>
+                        <FieldLabel>@L["Employee"]</FieldLabel>
+                        <Select TValue="Guid?"
+                                SelectedValue="@Filter.EmployeeId"
+                                SelectedValueChanged="@OnEmployeeIdChangedAsync">
+
+                            <SelectItem></SelectItem>
+
+                            @foreach (var item in EmployeesCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@item.Id">
+                                    @item.DisplayName
+                                </SelectItem>
+                            }
+
+                        </Select>
+                    </Field>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditLeaveModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="EditLeaveForm" Clicked="UpdateLeaveAsync" />
+                @*//<suite-custom-code-block-9>*@
+                @*//</suite-custom-code-block-9>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-10>*@
+        @*//</suite-custom-code-block-10>*@
+    </ModalContent>
+</Modal>
+

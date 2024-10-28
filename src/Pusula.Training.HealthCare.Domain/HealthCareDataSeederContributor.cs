@@ -25,6 +25,8 @@ namespace Pusula.Training.HealthCare
 
             var leave = await leaveRepository.InsertAsync(new Leave(guidGenerator.Create(), employee.Id, new System.DateTime(2021, 05, 20), new System.DateTime(2021, 05, 25), LeaveType.AnnualLeave, "Yıllık izin"), true);
 
+            var salary= await salaryRepository.InsertAsync(new Salary(guidGenerator.Create(), employee.Id, 5000, 1000, 500, new System.DateTime(2021, 05, 20), new System.DateTime(2021, 05, 25)), true);
+
         }
     }
 }

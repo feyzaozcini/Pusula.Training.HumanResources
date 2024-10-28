@@ -33,11 +33,9 @@ namespace Pusula.Training.HealthCare.Salaries
     {
         public virtual async Task<PagedResultDto<SalaryWithNavigationPropertiesDto>> GetListAsync(GetSalaryInput input)
         {
-            var totalCount = await salaryRepository.GetCountAsync(input.BaseAmountMin, input.BaseAmountMax, input.BonusMin, input.BonusMax, input.DeductionMin, input.DeductionMax, input.EffectiveFromMin,
-                input.EffectiveFromMax, input.EffectiveToMin, input.EffectiveToMax, input.TotalAmountMin, input.TotalAmountMax,input.EmployeeId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var totalCount = await salaryRepository.GetCountAsync(input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom ,input.EffectiveTo, input.EmployeeId, input.Sorting, input.MaxResultCount, input.SkipCount);
 
-            var items = await salaryRepository.GetListWithNavigationPropertiesAsync(input.BaseAmountMin, input.BaseAmountMax, input.BonusMin, input.BonusMax, input.DeductionMin, input.DeductionMax, input.EffectiveFromMin,
-                input.EffectiveFromMax, input.EffectiveToMin, input.EffectiveToMax, input.TotalAmountMin, input.TotalAmountMax, input.EmployeeId, input.Sorting, input.MaxResultCount, input.SkipCount);
+            var items = await salaryRepository.GetListWithNavigationPropertiesAsync(input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo, input.EmployeeId, input.Sorting, input.MaxResultCount, input.SkipCount);
 
             return new PagedResultDto<SalaryWithNavigationPropertiesDto>
             {
@@ -74,11 +72,11 @@ namespace Pusula.Training.HealthCare.Salaries
         [Authorize(HealthCarePermissions.Salaries.Create)]
         public virtual async Task<SalaryDto> CreateAsync(SalaryCreateDto input) => ObjectMapper.Map<Salary, SalaryDto>(
                 await salaryManager.CreateAsync(
-                     input.EmployeeId, input.BaseAmount,input.Bonus,input.Deduction,input.EffectiveFrom,input.EffectiveTo,input.TotalAmount));
+                     input.EmployeeId, input.BaseAmount,input.Bonus,input.Deduction,input.EffectiveFrom,input.EffectiveTo));
 
         [Authorize(HealthCarePermissions.Salaries.Edit)]
         public virtual async Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input) => ObjectMapper.Map<Salary, SalaryDto>(
-            await salaryManager.UpdateAsync(input.Id, input.EmployeeId, input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo, input.TotalAmount));
+            await salaryManager.UpdateAsync(input.Id, input.EmployeeId, input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo));
 
         [AllowAnonymous]
         public virtual async Task<IRemoteStreamContent> GetListAsExcelFileAsync(SalaryExcelDownloadDto input)
@@ -89,8 +87,7 @@ namespace Pusula.Training.HealthCare.Salaries
                 throw new AbpAuthorizationException("Invalid download token: " + input.DownloadToken);
             }
 
-            var salaries = await salaryRepository.GetListWithNavigationPropertiesAsync(input.BaseAmountMin, input.BaseAmountMax, input.BonusMin, input.BonusMax, input.DeductionMin, input.DeductionMax, input.EffectiveFromMin,
-                input.EffectiveFromMax, input.EffectiveToMin, input.EffectiveToMax, input.TotalAmountMin, input.TotalAmountMax, input.EmployeeId);
+            var salaries = await salaryRepository.GetListWithNavigationPropertiesAsync(input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo, input.EmployeeId);
             var items = salaries.Select(item => new SalaryExcelDto
             {
                 BaseAmount = item.Salary.BaseAmount,
@@ -109,8 +106,7 @@ namespace Pusula.Training.HealthCare.Salaries
         public virtual async Task DeleteByIdsAsync(List<Guid> salaryIds) => await salaryRepository.DeleteManyAsync(salaryIds);
 
         [Authorize(HealthCarePermissions.Salaries.Delete)]
-        public virtual async Task DeleteAllAsync(GetSalaryInput input) => await salaryRepository.DeleteAllAsync(input.BaseAmountMin, input.BaseAmountMax, input.BonusMin, input.BonusMax, input.DeductionMin, input.DeductionMax, input.EffectiveFromMin,
-                input.EffectiveFromMax, input.EffectiveToMin, input.EffectiveToMax, input.TotalAmountMin, input.TotalAmountMax, input.EmployeeId);
+        public virtual async Task DeleteAllAsync(GetSalaryInput input) => await salaryRepository.DeleteAllAsync(input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo, input.EmployeeId);
 
         [Authorize(HealthCarePermissions.Salaries.Delete)]
         public virtual async Task DeleteAsync(Guid id) => await salaryRepository.DeleteAsync(id);
@@ -134,12 +130,5 @@ namespace Pusula.Training.HealthCare.Salaries
             };
         }
 
-        
-
-        
-
-       
-
-        
     }
 }

@@ -1,6 +1,4 @@
-﻿using Pusula.Training.HealthCare.Employees;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 

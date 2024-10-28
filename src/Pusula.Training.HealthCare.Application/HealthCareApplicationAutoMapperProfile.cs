@@ -36,16 +36,16 @@ public class HealthCareApplicationAutoMapperProfile : Profile
 
         CreateMap<Salary, SalaryDto>();
         CreateMap<Salary, SalaryExcelDto>();
-        CreateMap<Salary, SalaryWithNavigationPropertiesDto>();
-        CreateMap<SalaryWithNavigationProperties, SalaryWithNavigationPropertiesDto>();
         CreateMap<SalaryDto, SalaryUpdateDto>();
-
+        CreateMap<SalaryWithNavigationProperties, SalaryWithNavigationPropertiesDto>();
 
         CreateMap<Leave, LeaveDto>();
         CreateMap<Leave, LeaveExcelDto>();
-        CreateMap<Leave, LeaveWithNavigationPropertiesDto>();
         CreateMap<LeaveDto, LeaveUpdateDto>();
-        CreateMap<Leave, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Id));
+        CreateMap<Leave, LeaveWithNavigationPropertiesDto>();
+        CreateMap<Employee, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Id));
+        CreateMap<LeaveWithNavigationProperties, LeaveWithNavigationPropertiesDto>();
+        
 
 
     }

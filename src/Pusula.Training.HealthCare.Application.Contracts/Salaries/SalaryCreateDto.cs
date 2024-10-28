@@ -15,12 +15,11 @@ namespace Pusula.Training.HealthCare.Salaries
         public decimal Bonus { get; set; } 
 
         public decimal Deduction { get; set; } 
+
         [Required]
         public DateTime EffectiveFrom { get; set; }   
 
         public DateTime EffectiveTo { get; set; }
-
-        public decimal TotalAmount { get; set; }
 
         [Required]
         public Guid EmployeeId { get; set; }
