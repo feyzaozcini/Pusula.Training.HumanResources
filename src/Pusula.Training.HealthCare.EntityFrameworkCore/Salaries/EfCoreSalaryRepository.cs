@@ -40,7 +40,7 @@ namespace Pusula.Training.HealthCare.Salaries
             var query = await GetQueryForNavigationPropertiesAsync();
             query = ApplyFilter(query, baseAmount, bonus,deduction,effectiveFrom,effectiveTo,employeeId);
             query = query.OrderBy(string.IsNullOrWhiteSpace(sorting) ? SalaryConst.GetDefaultSorting(true) : sorting);
-            return await query.Page(skipCount, maxResultCount).ToListAsync(cancellationToken);
+            return await query.PageBy(skipCount, maxResultCount).ToListAsync(cancellationToken);
         }
         public virtual async Task<long> GetCountAsync(decimal? baseAmount = null, decimal? bonus = null, decimal? deduction = null, DateTime? effectiveFrom = null, DateTime? effectiveTo = null, Guid? employeeId = null, string? sorting = null, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
         {
@@ -48,7 +48,7 @@ namespace Pusula.Training.HealthCare.Salaries
             query = ApplyFilter(query, baseAmount,bonus,deduction,effectiveFrom,effectiveTo, employeeId);
             return await query.LongCountAsync(GetCancellationToken(cancellationToken));
         }
-        public virtual async Task DeleteAllAsync(decimal? baseAmount = null, decimal? bonus = null, decimal? deduction = null, DateTime? effectiveFrom = null, DateTime? effectiveTo = null, Guid? employeeId = null, string? sorting = null, int maxResultCount = int.MaxValue, int skipCount = 0, CancellationToken cancellationToken = default)
+        public virtual async Task DeleteAllAsync(decimal? baseAmount = null, decimal? bonus = null, decimal? deduction = null, DateTime? effectiveFrom = null, DateTime? effectiveTo = null, Guid? employeeId = null, CancellationToken cancellationToken = default)
         {
             var query = await GetQueryForNavigationPropertiesAsync();
             query = ApplyFilter(query, baseAmount,bonus,deduction,effectiveFrom,effectiveTo, employeeId);

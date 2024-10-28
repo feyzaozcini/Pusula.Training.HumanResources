@@ -1,0 +1,255 @@
+﻿@page "/salaries"
+
+@attribute [Authorize(HealthCarePermissions.Salaries.Default)]
+@using Pusula.Training.HealthCare.Salaries
+@using Pusula.Training.HealthCare.Localization
+@using Pusula.Training.HealthCare.Shared
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Components.Web
+@using Blazorise
+@using Blazorise.Components
+@using Blazorise.DataGrid
+@using Volo.Abp.BlazoriseUI
+@using Volo.Abp.BlazoriseUI.Components
+@using Volo.Abp.ObjectMapping
+@using Volo.Abp.AspNetCore.Components.Messages
+@using Volo.Abp.AspNetCore.Components.Web.Theming.Layout
+
+@using Pusula.Training.HealthCare.Permissions
+@using Volo.Abp.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components
+@using Volo.Abp.Http.Client
+@inherits HealthCareComponentBase
+@inject ISalaryAppService SalaryAppService
+
+@inject IUiMessageService UiMessageService
+@inject AbpBlazorMessageLocalizerHelper<HealthCareResource> LH
+@inject IRemoteServiceConfigurationProvider RemoteServiceConfigurationProvider
+@inject NavigationManager NavigationManager
+
+@* ************************* PAGE HEADER ************************* *@
+<PageHeader Title="@L["Salaries"]" BreadcrumbItems="BreadcrumbItems" Toolbar="Toolbar">
+
+</PageHeader>
+
+@* ************************* SEARCH ************************* *@
+<Card>
+    <CardBody>
+        @*//<suite-custom-code-block-1>*@
+        @*//</suite-custom-code-block-1>*@
+        <Form id="SalarySearchForm" class="mb-3">
+            <Addons>
+                <Addon AddonType="AddonType.Body">
+                    <InputNumber @bind-Value="@Filter.BaseAmount" Placeholder="@L["Search"]" />
+                </Addon>
+                <Addon AddonType="AddonType.End">
+                    <SubmitButton Form="SalarySearchForm" Clicked="GetSalaryAsync">
+                        <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
+                    </SubmitButton>
+                </Addon>
+            </Addons>
+        </Form>
+
+        <Row Class="mt-3 mb-3">
+            <div class="col-md-12">
+                <a href="javascript:;" class="text-decoration-none" @onclick="() => ShowAdvancedFilters = !ShowAdvancedFilters">@L["SeeAdvancedFilters"]</a>
+            </div>
+        </Row>
+
+        <div style="display: @(!ShowAdvancedFilters ? "none" : "block")">
+            <Row>
+                
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Effective From"]</FieldLabel>
+                        <DatePicker TValue="DateTime?"
+                                    InputMode="DateInputMode.Date"
+                                    Date="@Filter.EffectiveFrom"
+                                    DateChanged="@OnEffectiveFrom"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Effective To"]</FieldLabel>
+                        <DatePicker TValue="DateTime?"
+                                    InputMode="DateInputMode.Date"
+                                    Date="@Filter.EffectiveTo"
+                                    DateChanged="@OnEffectiveTo"
+                                    Placeholder="@string.Empty" />
+                    </Field>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Employee"]</FieldLabel>
+                        <Select TValue="Guid?"
+                                SelectedValue="@Filter.EmployeeId"
+                                SelectedValueChanged="@OnEmployeeId">
+
+                            <SelectItem></SelectItem>
+
+                            @foreach (var item in EmployeesCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@item.Id">
+                                    @item.DisplayName
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Column>
+            </Row>
+            @*//<suite-custom-code-block-2>*@
+            @*//</suite-custom-code-block-2>*@
+        </div>
+
+        @*//<suite-custom-code-block-3>*@
+        @*//</suite-custom-code-block-3>*@
+    </CardBody>
+</Card>
+
+@* ************************* DATA GRID ************************* *@
+<Card>
+    <CardBody>
+        @if (SelectedSalaries.Any())
+        {
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                @if (AllSalariesSelected)
+                {
+                    <p class="lead mb-0">
+                        @L["AllItemsAreSelected", TotalCount]
+                    </p>
+                }
+                else
+                {
+                    <p class="lead mb-0">
+                        @if (SelectedSalaries.Count > 1)
+                        {
+                            @L["NumberOfItemsOnThisPageAreSelected", SelectedSalaries.Count]
+                        }
+                        else
+                        {
+                            @L["OneItemOnThisPageIsSelected"]
+                        }
+                    </p>
+                }
+
+                <div>
+                    @if ((SelectedSalaries.Count == PageSize || SelectedSalaries.Count == SalaryList.Count) && TotalCount > SelectedSalaries.Count)
+                    {
+                        if (!AllSalariesSelected)
+                        {
+                            <Button Clicked="SelectAllItems" Class="mx-1 btn-outline-secondary">@L["SelectAllItems", TotalCount]</Button>
+                        }
+                        else
+                        {
+                            <Button Clicked="ClearSelection" Class="mx-1 btn-outline-secondary">@L["ClearSelection"]</Button>
+                        }
+                    }
+
+                    <Button Color="Color.Danger" Class="mx-1" Size="Size.Medium" Clicked="DeleteSelectedSalariesAsync">
+                        <Icon Name="@IconName.Delete" /> @L["Delete"]
+                    </Button>
+                </div>
+            </div>
+
+            <hr class="my-1 mx-0" />
+        }
+        <DataGrid TItem="SalaryWithNavigationPropertiesDto"
+                  Data="SalaryList"
+                  SelectionMode="DataGridSelectionMode.Multiple"
+                  SelectedRows="SelectedSalaries"
+                  RowSelectable="@((args) => CanDeleteSalary)"
+                  SelectedRowsChanged="SelectedSalaryRowsChanged"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  Responsive="true"
+                  PageSize="PageSize"
+                  Class="datagrid-detail">
+            <LoadingTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <RadarSpinner />
+                    </Column>
+                </Row>
+            </LoadingTemplate>
+            <EmptyTemplate>
+                <Row Class="w-100 align-items-center" Style="height: 150px;">
+                    <Column>
+                        <Heading Size="HeadingSize.Is4" TextAlignment="TextAlignment.Center">@L["NoDataAvailable"]</Heading>
+                    </Column>
+                </Row>
+            </EmptyTemplate>
+            <DataGridColumns>
+
+                @if (CanDeleteSalary && SalaryList.Any())
+                {
+                    <DataGridMultiSelectColumn TItem="SalaryWithNavigationPropertiesDto" DisplayOrder="-1" Width="30px"></DataGridMultiSelectColumn>
+                }
+
+                <DataGridEntityActionsColumn TItem="SalaryWithNavigationPropertiesDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="SalaryWithNavigationPropertiesDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="SalaryWithNavigationPropertiesDto"
+                                          Visible="@CanEditSalary"
+                                          Clicked="async () => await OpenEditSalaryModalAsync(context)"
+                                          Text="@L["Edit"]"></EntityAction>
+                            <EntityAction TItem="SalaryWithNavigationPropertiesDto"
+                                          Visible="@CanDeleteSalary"
+                                          Clicked="() => DeleteSalaryAsync(context)"
+                                          ConfirmationMessage="@(()=> L["DeleteConfirmationMessage"])"
+                                          Text="@L["Delete"]"></EntityAction>
+                            @*//<suite-custom-code-block-4>*@
+                            @*//</suite-custom-code-block-4>*@
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Salary.BaseAmount"
+                                Caption="@L["Base Amount"]">
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Salary.Bonus"
+                                Caption="@L["Bonus"]">
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Salary.Deduction"
+                                Caption="@L["Deduction"]">
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Salary.EffectiveFrom"
+                                Caption="@L["EffectiveFrom"]">
+                    <DisplayTemplate>
+                        @context.Salary.EffectiveFrom.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Salary.EffectiveTo"
+                                Caption="@L["EffectiveTo"]">
+                    <DisplayTemplate>
+                        @context.Salary.EffectiveTo.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Employee.FirstName"
+                                Caption="@L["FirstName"]">
+                </DataGridColumn>
+
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Employee.LastName"
+                                Caption="@L["LastName"]">
+                </DataGridColumn>
+
+            </DataGridColumns>
+
+
+        </DataGrid>
+    </CardBody>
+</Card>

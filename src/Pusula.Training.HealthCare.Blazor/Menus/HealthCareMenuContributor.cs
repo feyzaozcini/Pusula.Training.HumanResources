@@ -68,6 +68,15 @@ public class HealthCareMenuContributor : IMenuContributor
                 icon: "fa fa-file-alt",
                 requiredPermissionName: HealthCarePermissions.Leaves.Default)
         );
+
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+                HealthCareMenus.Salaries,
+                l["Menu:Salaries"],
+                url: "/salaries",
+                icon: "fa fa-file-alt",
+                requiredPermissionName: HealthCarePermissions.Salaries.Default)
+        );
         return Task.CompletedTask;
     }
 

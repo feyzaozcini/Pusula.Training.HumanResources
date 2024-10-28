@@ -15,9 +15,6 @@ namespace Pusula.Training.HealthCare.Salaries
             DateTime? effectiveFrom = null,
             DateTime? effectiveTo = null,
             Guid? employeeId = null,
-            string? sorting = null,
-            int maxResultCount = int.MaxValue,
-            int skipCount = 0,
             CancellationToken cancellationToken = default);
 
         Task<SalaryWithNavigationProperties> GetWithNavigationPropertiesAsync(

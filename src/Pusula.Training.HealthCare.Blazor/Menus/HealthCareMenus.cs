@@ -9,4 +9,5 @@ public class HealthCareMenus
     public const string Departments = Prefix + ".Departments";
     public const string Employees = Prefix + ".Employees";
     public const string Leaves = Prefix + ".Leaves";
+    public const string Salaries = Prefix + ".Salaries";
 }
