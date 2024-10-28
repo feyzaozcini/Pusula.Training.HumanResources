@@ -354,7 +354,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["FirstName"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewEmployee.FirstName" MaxLength="EmployeeConst.FirstNameMaxLength">
+                            <TextEdit @bind-Text="@EditingEmployee.FirstName" MaxLength="EmployeeConst.FirstNameMaxLength">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -365,7 +365,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["LastName"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewEmployee.LastName" MaxLength="EmployeeConst.LastNameMaxLength">
+                            <TextEdit @bind-Text="@EditingEmployee.LastName" MaxLength="EmployeeConst.LastNameMaxLength">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -376,7 +376,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["IdentityNumber"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewEmployee.IdentityNumber" MaxLength="EmployeeConst.IdentityNumberMaxLength">
+                            <TextEdit @bind-Text="@EditingEmployee.IdentityNumber" MaxLength="EmployeeConst.IdentityNumberMaxLength">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -387,7 +387,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["BirthDate"]</FieldLabel>
-                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewEmployee.BirthDate">
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@EditingEmployee.BirthDate">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -398,7 +398,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Email"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewEmployee.Email" MaxLength="EmployeeConst.EmailMaxLength">
+                            <TextEdit @bind-Text="@EditingEmployee.Email" MaxLength="EmployeeConst.EmailMaxLength">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -409,7 +409,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["MobilePhoneNumber"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewEmployee.MobilePhoneNumber" MaxLength="EmployeeConst.MobilePhoneNumberMaxLength">
+                            <TextEdit @bind-Text="@EditingEmployee.MobilePhoneNumber" MaxLength="EmployeeConst.MobilePhoneNumberMaxLength">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -420,7 +420,7 @@
                     <Validation MessageLocalizer="LH.Localize">
                         <Field>
                             <FieldLabel>@L["Gender"]</FieldLabel>
-                            <Select TValue="EnumGender" @bind-SelectedValue="NewEmployee.Gender">
+                            <Select TValue="EnumGender" @bind-SelectedValue="EditingEmployee.Gender">
                                 @foreach (var gender in GendersCollection)
                                 {
                                     <SelectItem TValue="EnumGender" Value="@(gender.Id)">
@@ -433,7 +433,7 @@
 
                     <Field>
                         <FieldLabel>@L["Department"]</FieldLabel>
-                        <Select TValue="Guid" @bind-SelectedValue="@NewEmployee.DepartmentId">
+                        <Select TValue="Guid" @bind-SelectedValue="@EditingEmployee.DepartmentId">
                             @foreach (var department in DepartmentsCollection)
                             {
                                 <SelectItem TValue="Guid" Value="@(department.Id)">

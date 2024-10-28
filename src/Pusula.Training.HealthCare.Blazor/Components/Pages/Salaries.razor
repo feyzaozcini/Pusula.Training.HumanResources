@@ -253,3 +253,210 @@
         </DataGrid>
     </CardBody>
 </Card>
+
+@* ************************* CREATE MODAL ************************* *@
+<Modal @ref="CreateSalaryModal" Closing="@CreateSalaryModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-5>*@
+        @*//</suite-custom-code-block-5>*@
+        <Form id="CreateSalaryForm">
+            <ModalHeader>
+                <ModalTitle>@L["NewSalary"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateSalaryModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@NewSalaryValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@NewSalary"
+                             ValidateOnLoad="false">
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Base Amount"] </FieldLabel>
+                            <TextEdit @bind-Value="@NewSalary.BaseAmount" MaxLength="SalaryConst.BaseAmountMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Bonus"] </FieldLabel>
+                            <TextEdit @bind-Value="@NewSalary.Bonus" MaxLength="SalaryConst.BonusMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Deduction"] </FieldLabel>
+                            <TextEdit @bind-Value="@NewSalary.Deduction" MaxLength="SalaryConst.DeductionMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Effective From"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewSalary.EffectiveFrom">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Effective To"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewSalary.EffectiveTo">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+                    
+
+                    <Field>
+                        <FieldLabel>@L["Employee"]</FieldLabel>
+                        <Select TValue="Guid" @bind-SelectedValue="@NewSalary.EmployeeId">
+                            @foreach (var employee in EmployeesCollection)
+                            {
+                                <SelectItem TValue="Guid" Value="@(employee.Id)">
+                                    @(employee.DisplayName)
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateSalaryModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="CreateSalaryForm" Clicked="CreateSalaryAsync" />
+                @*//<suite-custom-code-block-6>*@
+                @*//</suite-custom-code-block-6>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-7>*@
+        @*//</suite-custom-code-block-7>*@
+    </ModalContent>
+</Modal>
+
+@* ************************* EDIT MODAL ************************* *@
+<Modal @ref="EditSalaryModal" Closing="@EditSalaryModal.CancelClosingModalWhenFocusLost">
+    <ModalContent Centered="true">
+        @*//<suite-custom-code-block-8>*@
+        @*//</suite-custom-code-block-8>*@
+        <Form id="EditSalaryForm">
+            <ModalHeader>
+                <ModalTitle>@L["Update"]</ModalTitle>
+                <CloseButton Clicked="CloseEditSalaryModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditingSalaryValidations"
+                             Mode="ValidationMode.Auto"
+                             Model="@EditingSalary"
+                             ValidateOnLoad="false">
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Base Amount"] </FieldLabel>
+                            <TextEdit @bind-Value="@EditingSalary.BaseAmount" MaxLength="SalaryConst.BaseAmountMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Bonus"] </FieldLabel>
+                            <TextEdit @bind-Value="@EditingSalary.Bonus" MaxLength="SalaryConst.BonusMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Deduction"] </FieldLabel>
+                            <TextEdit @bind-Value="@EditingSalary.Deduction" MaxLength="SalaryConst.DeductionMaxLength" InputType="number">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Effective From"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@EditingSalary.EffectiveFrom">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Effective To"]</FieldLabel>
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@EditingSalary.EffectiveTo">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </DateEdit>
+                        </Field>
+                    </Validation>
+
+                    <Field>
+                        <FieldLabel>@L["Employee"] *</FieldLabel>
+                        <Autocomplete Data="@EmployeesCollection"
+                                      TItem="LookupDto<Guid>"
+                                      TValue="Guid"
+                                      TextField="@((item) => item?.DisplayName)"
+                                      ValueField="@((item) => item?.Id ?? default)"
+                                      SearchChanged="@GetEmployeeCollectionLookupAsync"
+                                      @bind-SelectedValue="@EditingSalary.EmployeeId"
+                                      Placeholder="&#8212;" />
+                    </Field>
+
+
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditSalaryModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <SubmitButton Form="EditSalaryForm" Clicked="UpdateSalaryAsync" />
+                @*//<suite-custom-code-block-9>*@
+                @*//</suite-custom-code-block-9>*@
+            </ModalFooter>
+        </Form>
+        @*//<suite-custom-code-block-10>*@
+        @*//</suite-custom-code-block-10>*@
+    </ModalContent>
+</Modal>
+

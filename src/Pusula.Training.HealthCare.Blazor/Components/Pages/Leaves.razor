@@ -247,14 +247,20 @@
                         @context.Leave.LeaveType
                     </DisplayTemplate> 
                  </DataGridColumn>
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Employee.IdentityNumber"
+                                Caption="@L["EmployeeIdentityNumber"]">
+                </DataGridColumn>
 
                 <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
                                 Field="Employee.FirstName"
-                                Caption="@L["Employee"]">
+                                Caption="@L["EmployeeName"]">
                 </DataGridColumn>
-
+                <DataGridColumn TItem="LeaveWithNavigationPropertiesDto"
+                                Field="Employee.LastName"
+                                Caption="@L["EmployeeSurname"]">
+                </DataGridColumn>
             </DataGridColumns>
-
 
         </DataGrid>
     </CardBody>
@@ -381,7 +387,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["StartDate"]</FieldLabel>
-                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.StartDate">
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@EditingLeave.StartDate">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -393,7 +399,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["EndDate"]</FieldLabel>
-                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@NewLeave.EndDate">
+                            <DateEdit TValue="DateTime" InputMode="DateInputMode.Date" @bind-Date="@EditingLeave.EndDate">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -405,7 +411,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["LeaveType"]</FieldLabel>
-                            <Select TValue="LeaveType" @bind-SelectedValue="NewLeave.LeaveType">
+                            <Select TValue="LeaveType" @bind-SelectedValue="EditingLeave.LeaveType">
                                 @foreach (var leaveType in LeaveTypesCollection)
                                 {
                                     <SelectItem TValue="LeaveType" Value="@(leaveType.Id)">
@@ -420,7 +426,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Description"] *</FieldLabel>
-                            <TextEdit @bind-Text="@NewLeave.Description">
+                            <TextEdit @bind-Text="@EditingLeave.Description">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
@@ -430,21 +436,15 @@
 
 
                     <Field>
-                        <FieldLabel>@L["Employee"]</FieldLabel>
-                        <Select TValue="Guid?"
-                                SelectedValue="@Filter.EmployeeId"
-                                SelectedValueChanged="@OnEmployeeIdChangedAsync">
-
-                            <SelectItem></SelectItem>
-
-                            @foreach (var item in EmployeesCollection)
-                            {
-                                <SelectItem TValue="Guid" Value="@item.Id">
-                                    @item.DisplayName
-                                </SelectItem>
-                            }
-
-                        </Select>
+                        <FieldLabel>@L["Employee"] *</FieldLabel>
+                        <Autocomplete Data="@EmployeesCollection"
+                                      TItem="LookupDto<Guid>"
+                                      TValue="Guid"
+                                      TextField="@((item) => item?.DisplayName)"
+                                      ValueField="@((item) => item?.Id ?? default)"
+                                      SearchChanged="@GetEmployeeCollectionLookupAsync"
+                                      @bind-SelectedValue="@EditingLeave.EmployeeId"
+                                      Placeholder="&#8212;" />
                     </Field>
 
 
