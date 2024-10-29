@@ -236,7 +236,10 @@
                         @context.Salary.EffectiveTo.ToShortDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
-
+                <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
+                                Field="Employee.IdentityNumber"
+                                Caption="@L["IdentityNumber"]">
+                </DataGridColumn>
                 <DataGridColumn TItem="SalaryWithNavigationPropertiesDto"
                                 Field="Employee.FirstName"
                                 Caption="@L["FirstName"]">
@@ -274,32 +277,32 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Base Amount"] </FieldLabel>
-                            <TextEdit @bind-Value="@NewSalary.BaseAmount" MaxLength="SalaryConst.BaseAmountMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@NewSalary.BaseAmount">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
 
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Bonus"] </FieldLabel>
-                            <TextEdit @bind-Value="@NewSalary.Bonus" MaxLength="SalaryConst.BonusMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@NewSalary.Bonus">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Deduction"] </FieldLabel>
-                            <TextEdit @bind-Value="@NewSalary.Deduction" MaxLength="SalaryConst.DeductionMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@NewSalary.Deduction">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
 
@@ -378,32 +381,32 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Base Amount"] </FieldLabel>
-                            <TextEdit @bind-Value="@EditingSalary.BaseAmount" MaxLength="SalaryConst.BaseAmountMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@EditingSalary.BaseAmount">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
 
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Bonus"] </FieldLabel>
-                            <TextEdit @bind-Value="@EditingSalary.Bonus" MaxLength="SalaryConst.BonusMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@EditingSalary.Bonus">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Deduction"] </FieldLabel>
-                            <TextEdit @bind-Value="@EditingSalary.Deduction" MaxLength="SalaryConst.DeductionMaxLength" InputType="number">
+                            <NumericEdit TValue="decimal" @bind-Value="@EditingSalary.Deduction">
                                 <Feedback>
                                     <ValidationError />
                                 </Feedback>
-                            </TextEdit>
+                            </NumericEdit>
                         </Field>
                     </Validation>
 

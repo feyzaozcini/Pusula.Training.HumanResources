@@ -1,6 +1,5 @@
 ﻿@page "/employees"
 @attribute [Authorize(HealthCarePermissions.Employees.Default)]
-@attribute [Authorize(Roles = "HumanResources")]
 @using Pusula.Training.HealthCare.Employees
 @using Pusula.Training.HealthCare.Localization
 @using Pusula.Training.HealthCare.Shared
@@ -70,13 +69,13 @@
                 <Column ColumnSize="ColumnSize.Is3">
                     <Field>
                         <FieldLabel>@L["LastName"]</FieldLabel>
-                        <TextEdit Text="@Filter.LastName" TextChanged="@OnFirstNameChangedAsync" />
+                        <TextEdit Text="@Filter.LastName" TextChanged="@OnLastNameChangedAsync" />
                     </Field>
                 </Column>
                 <Column ColumnSize="ColumnSize.Is3">
                     <Field>
                         <FieldLabel>@L["IdentityNumber"]</FieldLabel>
-                        <TextEdit Text="@Filter.IdentityNumber" TextChanged="@OnFirstNameChangedAsync" />
+                        <TextEdit Text="@Filter.IdentityNumber" TextChanged="@OnIdentityNumberChangedAsync" />
                     </Field>
                     </Column>
             </Row>

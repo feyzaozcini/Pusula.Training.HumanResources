@@ -39,7 +39,7 @@ namespace Pusula.Training.HealthCare.Controllers.Salaries
         public virtual Task<SalaryDto> CreateAsync(SalaryCreateDto input) => salaryAppService.CreateAsync(input);
 
         [HttpPut]
-        public virtual Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input) => salaryAppService.UpdateAsync(id, input);
+        public virtual Task<SalaryDto> UpdateAsync( SalaryUpdateDto input) => salaryAppService.UpdateAsync(input);
 
         [HttpDelete]
         [Route("{id}")]

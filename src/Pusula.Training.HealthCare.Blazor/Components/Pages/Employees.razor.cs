@@ -250,6 +250,16 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
             Filter.FirstName = name;
             await SearchAsync();
         }
+        protected virtual async Task OnLastNameChangedAsync(string? name)
+        {
+            Filter.LastName = name;
+            await SearchAsync();
+        }
+        protected virtual async Task OnIdentityNumberChangedAsync(string? name)
+        {
+            Filter.IdentityNumber = name;
+            await SearchAsync();
+        }
 
         private Task SelectAllItems()
         {

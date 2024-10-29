@@ -75,7 +75,7 @@ namespace Pusula.Training.HealthCare.Salaries
                      input.EmployeeId, input.BaseAmount,input.Bonus,input.Deduction,input.EffectiveFrom,input.EffectiveTo));
 
         [Authorize(HealthCarePermissions.Salaries.Edit)]
-        public virtual async Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input) => ObjectMapper.Map<Salary, SalaryDto>(
+        public virtual async Task<SalaryDto> UpdateAsync(SalaryUpdateDto input) => ObjectMapper.Map<Salary, SalaryDto>(
             await salaryManager.UpdateAsync(input.Id, input.EmployeeId, input.BaseAmount, input.Bonus, input.Deduction, input.EffectiveFrom, input.EffectiveTo));
 
         [AllowAnonymous]

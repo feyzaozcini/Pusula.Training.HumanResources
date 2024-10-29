@@ -2,7 +2,6 @@
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Pusula.Training.HealthCare.Leaves;
 using Pusula.Training.HealthCare.Permissions;
 using Pusula.Training.HealthCare.Salaries;
 using Pusula.Training.HealthCare.Shared;
@@ -154,7 +153,11 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
         {
             NewSalary = new SalaryCreateDto
             {
+                BaseAmount = 0,
+                Bonus = 0,
+                Deduction = 0,
                 EffectiveFrom = DateTime.Now,
+                EffectiveTo = DateTime.Now,
                 EmployeeId = EmployeesCollection.Select(i => i.Id).FirstOrDefault(),
 
             };
@@ -227,7 +230,7 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
                     return;
                 }
 
-                await SalaryAppService.UpdateAsync(EditingSalaryId, EditingSalary);
+                await SalaryAppService.UpdateAsync(EditingSalary);
                 await GetSalaryAsync();
                 await EditSalaryModal.Hide();
             }

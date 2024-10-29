@@ -16,8 +16,10 @@ namespace Pusula.Training.HealthCare.Salaries
         [Required]
         public decimal BaseAmount { get; set; }
 
+        
         public decimal Bonus { get; set; }
 
+        
         public decimal Deduction { get; set; }
         [Required]
         public DateTime EffectiveFrom { get; set; }

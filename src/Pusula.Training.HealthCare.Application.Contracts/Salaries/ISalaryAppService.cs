@@ -22,7 +22,7 @@ namespace Pusula.Training.HealthCare.Salaries
 
         Task<SalaryDto> CreateAsync(SalaryCreateDto input);
 
-        Task<SalaryDto> UpdateAsync(Guid id, SalaryUpdateDto input);
+        Task<SalaryDto> UpdateAsync(SalaryUpdateDto input);
 
         Task<IRemoteStreamContent> GetListAsExcelFileAsync(SalaryExcelDownloadDto input);
 
