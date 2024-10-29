@@ -22,6 +22,7 @@ namespace Pusula.Training.HealthCare.Employees
 {
     [RemoteService(IsEnabled = false)]
     [Authorize(HealthCarePermissions.Employees.Default)]
+    [Authorize(Roles = "HumanResources")]
     public class EmployeeAppService(
         IEmployeeRepository employeeRepository,
         EmployeeManager employeeManager, 
@@ -75,6 +76,7 @@ namespace Pusula.Training.HealthCare.Employees
 
 
         [Authorize(HealthCarePermissions.Employees.Create)]
+        [Authorize(Roles = "HumanResources")]
         public virtual async Task<EmployeeDto> CreateAsync(EmployeeCreateDto input) => ObjectMapper.Map<Employee, EmployeeDto>(
                 await employeeManager.CreateAsync(
                     input.DepartmentId, input.FirstName, input.LastName, input.IdentityNumber, input.BirthDate, input.Email, input.MobilePhoneNumber, input.Gender));

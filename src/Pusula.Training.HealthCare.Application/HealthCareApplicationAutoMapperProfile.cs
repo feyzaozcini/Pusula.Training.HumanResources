@@ -43,7 +43,7 @@ public class HealthCareApplicationAutoMapperProfile : Profile
         CreateMap<Leave, LeaveExcelDto>();
         CreateMap<LeaveDto, LeaveUpdateDto>();
         CreateMap<Leave, LeaveWithNavigationPropertiesDto>();
-        CreateMap<Employee, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Id));
+        CreateMap<Employee, LookupDto<Guid>>().ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.IdentityNumber));
         CreateMap<LeaveWithNavigationProperties, LeaveWithNavigationPropertiesDto>();
         
 

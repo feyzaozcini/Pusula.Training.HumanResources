@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pusula.Training.HealthCare.Application.Contracts\Pusula.Training.HealthCare.Application.Contracts.csproj" />
     <ProjectReference Include="..\Pusula.Training.HealthCare.Domain.Shared\Pusula.Training.HealthCare.Domain.Shared.csproj" />
   </ItemGroup>
 
