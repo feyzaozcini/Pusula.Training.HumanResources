@@ -156,7 +156,9 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
         {
             NewEmployee = new EmployeeCreateDto
             {
+                BirthDate=DateTime.Now,
 
+                DepartmentId = DepartmentsCollection.Select(x => x.Id).FirstOrDefault()
             };
 
             SelectedCreateTab = "employee-create-tab";

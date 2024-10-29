@@ -157,7 +157,7 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
             NewLeave = new LeaveCreateDto
             {
                 StartDate = DateTime.Now,
-
+                EndDate= DateTime.Now,
                 EmployeeId = EmployeesCollection.Select(x => x.Id).FirstOrDefault()
             };
 

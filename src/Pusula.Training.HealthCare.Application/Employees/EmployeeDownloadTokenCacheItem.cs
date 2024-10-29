@@ -9,5 +9,9 @@ namespace Pusula.Training.HealthCare.Employees
     public class EmployeeDownloadTokenCacheItem
     {
         public string Token { get; set; } = null!;
+
+        public List<EmployeeWithNavigationPropertiesDto> EmployeeWithNavigationPropertiesDtos { get; set; } = null!;
+
+        public int TotalCount { get; set; }
     }
 }
