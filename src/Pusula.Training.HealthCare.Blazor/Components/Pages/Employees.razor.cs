@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using Volo.Abp.Application.Dtos;
@@ -262,6 +260,12 @@ namespace Pusula.Training.HealthCare.Blazor.Components.Pages
             Filter.IdentityNumber = name;
             await SearchAsync();
         }
+        protected virtual async Task OnEmailChangedAsync(string? name)
+        {
+            Filter.Email = name;
+            await SearchAsync();
+        }
+        
 
         private Task SelectAllItems()
         {

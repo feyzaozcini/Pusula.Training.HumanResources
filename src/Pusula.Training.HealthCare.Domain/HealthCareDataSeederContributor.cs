@@ -22,7 +22,7 @@ namespace Pusula.Training.HealthCare
     public class HealthCareDataSeederContributor(IDepartmentRepository departmentRepository, IEmployeeRepository employeeRepository, ISalaryRepository salaryRepository, ILeaveRepository leaveRepository,
 
         IGuidGenerator guidGenerator, IdentityUserManager userManager,
-            IdentityRoleManager roleManager, IPermissionManager permissionManager) : IDataSeedContributor, ITransientDependency
+            IdentityRoleManager roleManager) : IDataSeedContributor, ITransientDependency
     {
         public async Task SeedAsync(DataSeedContext context)
         {
@@ -32,10 +32,10 @@ namespace Pusula.Training.HealthCare
             var department3 = await departmentRepository.InsertAsync(new Department(guidGenerator.Create(), "Dış Ticaret"), true);
             var department4 = await departmentRepository.InsertAsync(new Department(guidGenerator.Create(), "Yönetim"), true);
 
-            var employee=await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department.Id,"Ahmet", "Yılmaz", "14444444442", new System.DateTime(1990, 05, 20), "ahmet@gmail.com","5355353535",EnumGender.Male), true);
-            var employee2 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department2.Id, "Merve", "Ateş", "1444444444", new System.DateTime(1995, 06, 15), "merve@gmail.com", "5353443434", EnumGender.Female), true);
-            var employee3 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department3.Id, "Ayşe", "Kaya", "14444444446", new System.DateTime(1992, 10, 20), "ayse@gmail.com", "53533533635", EnumGender.Female), true);
-            var employee4 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department4.Id, "Berke", "Demir", "1444444448", new System.DateTime(1997, 03, 05), "berke@gmail.com", "5353448575", EnumGender.Male), true);
+            var employee=await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department.Id,"Ahmet", "Yılmaz","11111111110", new System.DateTime(1990, 05, 20), "ahmet@gmail.com","5355353535",EnumGender.Male), true);
+            var employee2 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department2.Id, "Merve", "Ateş", "11111111112", new System.DateTime(1995, 06, 15), "merve@gmail.com", "5353443434", EnumGender.Female), true);
+            var employee3 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department3.Id, "Ayşe", "Kaya", "11111111114", new System.DateTime(1992, 10, 20), "ayse@gmail.com", "53533533635", EnumGender.Female), true);
+            var employee4 = await employeeRepository.InsertAsync(new Employee(guidGenerator.Create(), department4.Id, "Berke", "Demir", "11111111116", new System.DateTime(1997, 03, 05), "berke@gmail.com", "5353448575", EnumGender.Male), true);
 
 
             var leave = await leaveRepository.InsertAsync(new Leave(guidGenerator.Create(), employee.Id, new System.DateTime(2021, 05, 20), new System.DateTime(2021, 05, 25), LeaveType.AnnualLeave, "Yıllık izin"), true);
@@ -70,7 +70,7 @@ namespace Pusula.Training.HealthCare
 
             var user = new IdentityUser(guidGenerator.Create(), "hruser", "hruser@gmail.com");
 
-            // Kullanıcıyı parola ile oluşturma
+            
             var result = await userManager.CreateAsync(user, "Human.123");
 
             await userManager.AddToRoleAsync(user, "hruser");

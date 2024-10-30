@@ -78,6 +78,12 @@
                         <TextEdit Text="@Filter.IdentityNumber" TextChanged="@OnIdentityNumberChangedAsync" />
                     </Field>
                     </Column>
+                <Column ColumnSize="ColumnSize.Is3">
+                    <Field>
+                        <FieldLabel>@L["Email"]</FieldLabel>
+                        <TextEdit Text="@Filter.Email" TextChanged="@OnEmailChangedAsync" />
+                    </Field>
+                </Column>
             </Row>
             @*//<suite-custom-code-block-2>*@
             @*//</suite-custom-code-block-2>*@

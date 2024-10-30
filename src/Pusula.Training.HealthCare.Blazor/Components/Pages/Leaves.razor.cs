@@ -14,7 +14,6 @@ using System.Web;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.AspNetCore.Components.Web.Theming.PageToolbars;
 using Volo.Abp.BlazoriseUI.Components;
-using Pusula.Training.HealthCare.Employees;
 
 namespace Pusula.Training.HealthCare.Blazor.Components.Pages
 {

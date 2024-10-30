@@ -41,8 +41,20 @@
         <Form id="SalarySearchForm" class="mb-3">
             <Addons>
                 <Addon AddonType="AddonType.Body">
-                    <InputNumber @bind-Value="@Filter.BaseAmount" Placeholder="@L["Search"]" />
+                    <Select TValue="Guid?" @bind-SelectedValue="Filter.EmployeeId">
+                        <SelectItem TValue="Guid?" Value="null">
+                            @L["SelectEmployee"]
+                        </SelectItem>
+
+                        @foreach (var employee in EmployeesCollection)
+                        {
+                            <SelectItem TValue="Guid?" Value="employee.Id">
+                                @(employee.DisplayName)
+                            </SelectItem>
+                        }
+                    </Select>
                 </Addon>
+
                 <Addon AddonType="AddonType.End">
                     <SubmitButton Form="SalarySearchForm" Clicked="GetSalaryAsync">
                         <Icon Name="IconName.Search" Class="me-1"></Icon>@L["Search"]
