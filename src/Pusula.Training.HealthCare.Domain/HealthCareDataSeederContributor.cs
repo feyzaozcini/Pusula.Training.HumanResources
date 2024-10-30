@@ -49,27 +49,34 @@ namespace Pusula.Training.HealthCare
             var salary4 = await salaryRepository.InsertAsync(new Salary(guidGenerator.Create(), employee4.Id, 8000, 4000, 2000, new System.DateTime(2024, 07, 20), new System.DateTime(2025, 01, 20)), true);
 
             //Create Roles
-            var role= await roleManager.FindByNameAsync("HumanResources");
+            var role= await roleManager.FindByNameAsync("hruser");
             if (role == null)
             {
-                role = new IdentityRole(guidGenerator.Create(), "HumanResources");
+                role = new IdentityRole(guidGenerator.Create(), "hruser");
+
                 await roleManager.CreateAsync(role);
+                
             }
+
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Dashboard.DashboardGroup, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Departments.Default, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Departments.Create, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Salaries.Default, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Salaries.Create, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Employees.Default, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Employees.Create, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Leaves.Default, "true"));
+            await roleManager.AddClaimAsync(role, new Claim(HealthCarePermissions.Leaves.Create, "true"));
 
             var user = new IdentityUser(guidGenerator.Create(), "hruser", "hruser@gmail.com");
 
             // Kullanıcıyı parola ile oluşturma
             var result = await userManager.CreateAsync(user, "Human.123");
 
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(user, "HumanResources");
-                await userManager.AddClaimAsync(user, new Claim("HumanResources", "true"));
-
-                await userManager.AddClaimAsync(user, new Claim("HumanResources", "true"));
-            }
-
+            await userManager.AddToRoleAsync(user, "hruser");
             
+
+
         }
     }
 }
